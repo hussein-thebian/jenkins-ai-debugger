@@ -1,6 +1,7 @@
 services:
   jenkins:
-    image: jenkins/jenkins:lts-jdk17
+    build: .
+    image: jenkins-ai-lab:latest
     container_name: jenkins
     ports:
       - "8080:8080"
