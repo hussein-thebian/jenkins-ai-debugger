@@ -1,0 +1,12 @@
+# Secrets — never commit
+.env
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
