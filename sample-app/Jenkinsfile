@@ -4,6 +4,7 @@ pipeline {
     options {
         timestamps()
         buildDiscarder(logRotator(numToKeepStr: '20'))
+        timeout(time: 10, unit: 'MINUTES')
     }
 
     stages {
@@ -26,6 +27,38 @@ pipeline {
                         . .venv/bin/activate
                         python -m pytest -v --junitxml=test-results.xml
                     '''
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                dir('sample-app/infra') {
+                    sh '''
+                        terraform fmt -check
+                        terraform init -input=false -no-color
+                        terraform validate -no-color
+                        terraform plan -input=false -no-color
+                    '''
+                }
+            }
+        }
+
+        stage('Smoke Test') {
+            options {
+                timeout(time: 1, unit: 'MINUTES')
+            }
+            steps {
+                dir('sample-app') {
+                    sh 'python3 scripts/smoke_test.py'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                withCredentials([string(credentialsId: 'deploy-token', variable: 'DEPLOY_TOKEN')]) {
+                    sh 'echo "Deploying calculator (token length: ${#DEPLOY_TOKEN})"'
                 }
             }
         }
