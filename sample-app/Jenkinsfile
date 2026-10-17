@@ -57,7 +57,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                withCredentials([string(credentialsId: 'deploy-token', variable: 'DEPLOY_TOKEN')]) {
+                withCredentials([string(credentialsId: 'deploy-tokn', variable: 'DEPLOY_TOKEN')]) {
                     sh 'echo "Deploying calculator (token length: ${#DEPLOY_TOKEN})"'
                 }
             }
