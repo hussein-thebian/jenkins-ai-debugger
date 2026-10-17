@@ -1,0 +1,298 @@
+Branch indexing
+ > git rev-parse --resolve-git-dir /var/jenkins_home/caches/git-ce27b5a5b8247e7996aa866f991fdb7c/.git # timeout=10
+Setting origin to file:///repo
+ > git config remote.origin.url file:///repo # timeout=10
+Fetching origin...
+Fetching upstream changes from origin
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git config --get remote.origin.url # timeout=10
+ > git fetch --no-tags --force --progress -- origin +refs/heads/*:refs/remotes/origin/* # timeout=10
+Seen branch in repository origin/fail/bad-terraform
+Seen branch in repository origin/fail/broken-test
+Seen branch in repository origin/fail/missing-credential
+Seen branch in repository origin/fail/timeout
+Seen branch in repository origin/main
+Seen 5 remote branches
+Obtained sample-app/Jenkinsfile from 220b4ad96e9683e4709afc89ccf391ca8faedfc7
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Still waiting to schedule task
+Waiting for next available executor
+Running on Jenkins in /var/jenkins_home/workspace/calculator_fail_timeout
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning with configured refspecs honoured and without tags
+Cloning repository file:///repo
+ > git init /var/jenkins_home/workspace/calculator_fail_timeout # timeout=10
+Fetching upstream changes from file:///repo
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- file:///repo +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url file:///repo # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision 220b4ad96e9683e4709afc89ccf391ca8faedfc7 (fail/timeout)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 220b4ad96e9683e4709afc89ccf391ca8faedfc7 # timeout=10
+Commit message: "Increase smoke test wait for slower environments"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] timeout
+[2026-10-17T10:51:52.080Z] Timeout set to expire in 10 min
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Setup)
+[Pipeline] dir
+[2026-10-17T10:51:53.042Z] Running in /var/jenkins_home/workspace/calculator_fail_timeout/sample-app
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:51:53.590Z] + python3 -m venv .venv
+[2026-10-17T10:52:15.422Z] + . .venv/bin/activate
+[2026-10-17T10:52:15.422Z] + deactivate nondestructive
+[2026-10-17T10:52:15.422Z] + [ -n  ]
+[2026-10-17T10:52:15.422Z] + [ -n  ]
+[2026-10-17T10:52:15.422Z] + hash -r
+[2026-10-17T10:52:15.422Z] + [ -n  ]
+[2026-10-17T10:52:15.422Z] + unset VIRTUAL_ENV
+[2026-10-17T10:52:15.422Z] + unset VIRTUAL_ENV_PROMPT
+[2026-10-17T10:52:15.423Z] + [ ! nondestructive = nondestructive ]
+[2026-10-17T10:52:15.423Z] + uname
+[2026-10-17T10:52:15.423Z] + export VIRTUAL_ENV=/var/jenkins_home/workspace/calculator_fail_timeout/sample-app/.venv
+[2026-10-17T10:52:15.423Z] + _OLD_VIRTUAL_PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:52:15.423Z] + PATH=/var/jenkins_home/workspace/calculator_fail_timeout/sample-app/.venv/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:52:15.423Z] + export PATH
+[2026-10-17T10:52:15.423Z] + VIRTUAL_ENV_PROMPT=.venv
+[2026-10-17T10:52:15.423Z] + export VIRTUAL_ENV_PROMPT
+[2026-10-17T10:52:15.431Z] + [ -n  ]
+[2026-10-17T10:52:15.431Z] + [ -z  ]
+[2026-10-17T10:52:15.431Z] + _OLD_VIRTUAL_PS1=$ 
+[2026-10-17T10:52:15.431Z] + PS1=(.venv) $ 
+[2026-10-17T10:52:15.431Z] + export PS1
+[2026-10-17T10:52:15.431Z] + hash -r
+[2026-10-17T10:52:15.431Z] + pip install -r requirements.txt
+[2026-10-17T10:52:18.148Z] Collecting pytest==8.3.3 (from -r requirements.txt (line 1))
+[2026-10-17T10:52:18.149Z]   Using cached pytest-8.3.3-py3-none-any.whl.metadata (7.5 kB)
+[2026-10-17T10:52:18.149Z] Collecting iniconfig (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:52:18.149Z]   Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+[2026-10-17T10:52:18.758Z] Collecting packaging (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:52:18.759Z]   Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+[2026-10-17T10:52:19.014Z] Collecting pluggy<2,>=1.5 (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:52:19.320Z]   Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+[2026-10-17T10:52:19.320Z] Using cached pytest-8.3.3-py3-none-any.whl (342 kB)
+[2026-10-17T10:52:19.320Z] Using cached pluggy-1.7.0-py3-none-any.whl (27 kB)
+[2026-10-17T10:52:19.320Z] Using cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+[2026-10-17T10:52:19.899Z] Using cached packaging-26.3-py3-none-any.whl (129 kB)
+[2026-10-17T10:52:20.479Z] Installing collected packages: pluggy, packaging, iniconfig, pytest
+[2026-10-17T10:52:28.018Z] 
+[2026-10-17T10:52:28.018Z] Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pytest-8.3.3
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] dir
+[2026-10-17T10:52:30.071Z] Running in /var/jenkins_home/workspace/calculator_fail_timeout/sample-app
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:52:30.831Z] + . .venv/bin/activate
+[2026-10-17T10:52:30.831Z] + deactivate nondestructive
+[2026-10-17T10:52:30.831Z] + [ -n  ]
+[2026-10-17T10:52:30.831Z] + [ -n  ]
+[2026-10-17T10:52:30.831Z] + hash -r
+[2026-10-17T10:52:30.831Z] + [ -n  ]
+[2026-10-17T10:52:30.832Z] + unset VIRTUAL_ENV
+[2026-10-17T10:52:30.832Z] + unset VIRTUAL_ENV_PROMPT
+[2026-10-17T10:52:30.832Z] + [ ! nondestructive = nondestructive ]
+[2026-10-17T10:52:30.832Z] + uname
+[2026-10-17T10:52:30.832Z] + export VIRTUAL_ENV=/var/jenkins_home/workspace/calculator_fail_timeout/sample-app/.venv
+[2026-10-17T10:52:30.832Z] + _OLD_VIRTUAL_PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:52:30.832Z] + PATH=/var/jenkins_home/workspace/calculator_fail_timeout/sample-app/.venv/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:52:30.832Z] + export PATH
+[2026-10-17T10:52:30.832Z] + VIRTUAL_ENV_PROMPT=.venv
+[2026-10-17T10:52:30.833Z] + export VIRTUAL_ENV_PROMPT
+[2026-10-17T10:52:30.833Z] + [ -n  ]
+[2026-10-17T10:52:30.833Z] + [ -z  ]
+[2026-10-17T10:52:30.833Z] + _OLD_VIRTUAL_PS1=$ 
+[2026-10-17T10:52:30.833Z] + PS1=(.venv) $ 
+[2026-10-17T10:52:30.833Z] + export PS1
+[2026-10-17T10:52:30.833Z] + hash -r
+[2026-10-17T10:52:30.833Z] + python -m pytest -v --junitxml=test-results.xml
+[2026-10-17T10:52:32.722Z] ============================= test session starts ==============================
+[2026-10-17T10:52:32.722Z] platform linux -- Python 3.13.5, pytest-8.3.3, pluggy-1.7.0 -- /var/jenkins_home/workspace/calculator_fail_timeout/sample-app/.venv/bin/python
+[2026-10-17T10:52:32.722Z] cachedir: .pytest_cache
+[2026-10-17T10:52:32.723Z] rootdir: /var/jenkins_home/workspace/calculator_fail_timeout/sample-app
+[2026-10-17T10:54:09.039Z] collecting ... collected 5 items
+[2026-10-17T10:54:09.040Z] 
+[2026-10-17T10:54:09.040Z] tests/test_calculator.py::test_add PASSED                                [ 20%]
+[2026-10-17T10:54:09.040Z] tests/test_calculator.py::test_subtract PASSED                           [ 40%]
+[2026-10-17T10:54:09.040Z] tests/test_calculator.py::test_multiply PASSED                           [ 60%]
+[2026-10-17T10:54:09.040Z] tests/test_calculator.py::test_divide PASSED                             [ 80%]
+[2026-10-17T10:54:09.040Z] tests/test_calculator.py::test_divide_by_zero PASSED                     [100%]
+[2026-10-17T10:54:09.040Z] 
+[2026-10-17T10:54:09.040Z] - generated xml file: /var/jenkins_home/workspace/calculator_fail_timeout/sample-app/test-results.xml -
+[2026-10-17T10:54:09.040Z] ========================= 5 passed in 90.55s (0:01:30) =========================
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Terraform Plan)
+[Pipeline] dir
+[2026-10-17T10:54:10.668Z] Running in /var/jenkins_home/workspace/calculator_fail_timeout/sample-app/infra
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:54:11.220Z] + terraform fmt -check
+[2026-10-17T10:54:11.221Z] + terraform init -input=false -no-color
+[2026-10-17T10:54:11.473Z] Initializing the backend...
+[2026-10-17T10:54:11.473Z] 
+[2026-10-17T10:54:11.473Z] Initializing provider plugins...
+[2026-10-17T10:54:11.473Z] 
+[2026-10-17T10:54:11.473Z] Terraform has been successfully initialized!
+[2026-10-17T10:54:11.473Z] 
+[2026-10-17T10:54:11.473Z] You may now begin working with Terraform. Try running "terraform plan" to see
+[2026-10-17T10:54:11.473Z] any changes that are required for your infrastructure. All Terraform commands
+[2026-10-17T10:54:11.473Z] should now work.
+[2026-10-17T10:54:11.473Z] 
+[2026-10-17T10:54:11.473Z] If you ever set or change modules or backend configuration for Terraform,
+[2026-10-17T10:54:11.473Z] rerun this command to reinitialize your working directory. If you forget, other
+[2026-10-17T10:54:11.473Z] commands will detect it and remind you to do so if necessary.
+[2026-10-17T10:54:11.473Z] + terraform validate -no-color
+[2026-10-17T10:54:11.473Z] Success! The configuration is valid.
+[2026-10-17T10:54:11.473Z] 
+[2026-10-17T10:54:11.726Z] + terraform plan -input=false -no-color
+[2026-10-17T10:54:11.980Z] 
+[2026-10-17T10:54:11.981Z] Changes to Outputs:
+[2026-10-17T10:54:11.981Z]   + app_name = "calculator-dev"
+[2026-10-17T10:54:11.981Z]   + servers  = [
+[2026-10-17T10:54:11.981Z]       + "calculator-dev-1",
+[2026-10-17T10:54:11.981Z]       + "calculator-dev-2",
+[2026-10-17T10:54:11.981Z]     ]
+[2026-10-17T10:54:11.981Z] 
+[2026-10-17T10:54:11.981Z] You can apply this plan to save these new output values to the Terraform
+[2026-10-17T10:54:11.981Z] state, without changing any real infrastructure.
+[2026-10-17T10:54:11.981Z] 
+[2026-10-17T10:54:11.981Z] ─────────────────────────────────────────────────────────────────────────────
+[2026-10-17T10:54:11.981Z] 
+[2026-10-17T10:54:11.982Z] Note: You didn't use the -out option to save this plan, so Terraform can't
+[2026-10-17T10:54:11.982Z] guarantee to take exactly these actions if you run "terraform apply" now.
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Smoke Test)
+[Pipeline] timeout
+[2026-10-17T10:54:12.785Z] Timeout set to expire in 1 min 0 sec
+[Pipeline] {
+[Pipeline] dir
+[2026-10-17T10:54:13.053Z] Running in /var/jenkins_home/workspace/calculator_fail_timeout/sample-app
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:54:13.565Z] + python3 scripts/smoke_test.py
+[2026-10-17T10:54:13.565Z] Waiting 90s for the service to become healthy...
+[2026-10-17T10:54:14.488Z]   still waiting... 1s
+[2026-10-17T10:54:15.407Z]   still waiting... 2s
+[2026-10-17T10:54:16.760Z]   still waiting... 3s
+[2026-10-17T10:54:17.677Z]   still waiting... 4s
+[2026-10-17T10:54:18.597Z]   still waiting... 5s
+[2026-10-17T10:54:19.514Z]   still waiting... 6s
+[2026-10-17T10:54:20.443Z]   still waiting... 7s
+[2026-10-17T10:54:21.799Z]   still waiting... 8s
+[2026-10-17T10:54:22.733Z]   still waiting... 9s
+[2026-10-17T10:54:23.651Z]   still waiting... 10s
+[2026-10-17T10:54:24.565Z]   still waiting... 11s
+[2026-10-17T10:54:25.486Z]   still waiting... 12s
+[2026-10-17T10:54:26.415Z]   still waiting... 13s
+[2026-10-17T10:54:27.773Z]   still waiting... 14s
+[2026-10-17T10:54:28.696Z]   still waiting... 15s
+[2026-10-17T10:54:29.624Z]   still waiting... 16s
+[2026-10-17T10:54:30.549Z]   still waiting... 17s
+[2026-10-17T10:54:31.478Z]   still waiting... 18s
+[2026-10-17T10:54:32.402Z]   still waiting... 19s
+[2026-10-17T10:54:33.756Z]   still waiting... 20s
+[2026-10-17T10:54:34.674Z]   still waiting... 21s
+[2026-10-17T10:54:35.591Z]   still waiting... 22s
+[2026-10-17T10:54:36.512Z]   still waiting... 23s
+[2026-10-17T10:54:37.429Z]   still waiting... 24s
+[2026-10-17T10:54:38.785Z]   still waiting... 25s
+[2026-10-17T10:54:39.720Z]   still waiting... 26s
+[2026-10-17T10:54:40.637Z]   still waiting... 27s
+[2026-10-17T10:54:41.569Z]   still waiting... 28s
+[2026-10-17T10:54:42.485Z]   still waiting... 29s
+[2026-10-17T10:54:43.399Z]   still waiting... 30s
+[2026-10-17T10:54:44.756Z]   still waiting... 31s
+[2026-10-17T10:54:45.673Z]   still waiting... 32s
+[2026-10-17T10:54:46.588Z]   still waiting... 33s
+[2026-10-17T10:54:47.504Z]   still waiting... 34s
+[2026-10-17T10:54:48.424Z]   still waiting... 35s
+[2026-10-17T10:54:49.806Z]   still waiting... 36s
+[2026-10-17T10:54:50.723Z]   still waiting... 37s
+[2026-10-17T10:54:51.643Z]   still waiting... 38s
+[2026-10-17T10:54:52.562Z]   still waiting... 39s
+[2026-10-17T10:54:53.482Z]   still waiting... 40s
+[2026-10-17T10:54:54.398Z]   still waiting... 41s
+[2026-10-17T10:54:55.734Z]   still waiting... 42s
+[2026-10-17T10:54:56.651Z]   still waiting... 43s
+[2026-10-17T10:54:57.570Z]   still waiting... 44s
+[2026-10-17T10:54:58.489Z]   still waiting... 45s
+[2026-10-17T10:54:59.409Z]   still waiting... 46s
+[2026-10-17T10:55:00.768Z]   still waiting... 47s
+[2026-10-17T10:55:01.686Z]   still waiting... 48s
+[2026-10-17T10:55:02.602Z]   still waiting... 49s
+[2026-10-17T10:55:03.521Z]   still waiting... 50s
+[2026-10-17T10:55:04.437Z]   still waiting... 51s
+[2026-10-17T10:55:05.795Z]   still waiting... 52s
+[2026-10-17T10:55:06.713Z]   still waiting... 53s
+[2026-10-17T10:55:07.635Z]   still waiting... 54s
+[2026-10-17T10:55:08.549Z]   still waiting... 55s
+[2026-10-17T10:55:09.469Z]   still waiting... 56s
+[2026-10-17T10:55:10.821Z]   still waiting... 57s
+[2026-10-17T10:55:11.747Z]   still waiting... 58s
+[2026-10-17T10:55:12.665Z]   still waiting... 59s
+[2026-10-17T10:55:12.758Z] Cancelling nested steps due to timeout
+[2026-10-17T10:55:12.840Z] Sending interrupt signal to process
+[2026-10-17T10:55:12.919Z] Terminated
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+Stage "Deploy" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] junit
+[2026-10-17T10:55:14.356Z] Recording test results
+[2026-10-17T10:55:14.405Z] [Checks API] No suitable checks publisher found.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Timeout has been exceeded
+org.jenkinsci.plugins.workflow.actions.ErrorAction$ErrorId: 02eb1775-817c-43bd-b09a-a4ea3b2931dc
+Finished: ABORTED

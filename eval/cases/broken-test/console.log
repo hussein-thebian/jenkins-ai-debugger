@@ -1,0 +1,198 @@
+Branch indexing
+ > git rev-parse --resolve-git-dir /var/jenkins_home/caches/git-ce27b5a5b8247e7996aa866f991fdb7c/.git # timeout=10
+Setting origin to file:///repo
+ > git config remote.origin.url file:///repo # timeout=10
+Fetching origin...
+Fetching upstream changes from origin
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git config --get remote.origin.url # timeout=10
+ > git fetch --no-tags --force --progress -- origin +refs/heads/*:refs/remotes/origin/* # timeout=10
+Seen branch in repository origin/fail/bad-terraform
+Seen branch in repository origin/fail/broken-test
+Seen branch in repository origin/fail/missing-credential
+Seen branch in repository origin/fail/timeout
+Seen branch in repository origin/main
+Seen 5 remote branches
+Obtained sample-app/Jenkinsfile from 4446cb4ff8f36613bdb3a1065c74f8db650559ee
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Still waiting to schedule task
+Waiting for next available executor
+Running on Jenkins in /var/jenkins_home/workspace/calculator_fail_broken-test
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning with configured refspecs honoured and without tags
+Cloning repository file:///repo
+ > git init /var/jenkins_home/workspace/calculator_fail_broken-test # timeout=10
+Fetching upstream changes from file:///repo
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- file:///repo +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url file:///repo # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision 4446cb4ff8f36613bdb3a1065c74f8db650559ee (fail/broken-test)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 4446cb4ff8f36613bdb3a1065c74f8db650559ee # timeout=10
+Commit message: "Refactor calculator arithmetic helpers"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] timeout
+[2026-10-17T10:51:54.599Z] Timeout set to expire in 10 min
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Setup)
+[Pipeline] dir
+[2026-10-17T10:51:55.182Z] Running in /var/jenkins_home/workspace/calculator_fail_broken-test/sample-app
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:51:55.667Z] + python3 -m venv .venv
+[2026-10-17T10:52:13.681Z] + . .venv/bin/activate
+[2026-10-17T10:52:13.682Z] + deactivate nondestructive
+[2026-10-17T10:52:13.682Z] + [ -n  ]
+[2026-10-17T10:52:13.682Z] + [ -n  ]
+[2026-10-17T10:52:13.682Z] + hash -r
+[2026-10-17T10:52:13.683Z] + [ -n  ]
+[2026-10-17T10:52:13.683Z] + unset VIRTUAL_ENV
+[2026-10-17T10:52:13.683Z] + unset VIRTUAL_ENV_PROMPT
+[2026-10-17T10:52:13.683Z] + [ ! nondestructive = nondestructive ]
+[2026-10-17T10:52:13.683Z] + uname
+[2026-10-17T10:52:13.683Z] + export VIRTUAL_ENV=/var/jenkins_home/workspace/calculator_fail_broken-test/sample-app/.venv
+[2026-10-17T10:52:13.683Z] + _OLD_VIRTUAL_PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:52:13.683Z] + PATH=/var/jenkins_home/workspace/calculator_fail_broken-test/sample-app/.venv/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:52:13.683Z] + export PATH
+[2026-10-17T10:52:13.683Z] + VIRTUAL_ENV_PROMPT=.venv
+[2026-10-17T10:52:13.683Z] + export VIRTUAL_ENV_PROMPT
+[2026-10-17T10:52:13.683Z] + [ -n  ]
+[2026-10-17T10:52:13.683Z] + [ -z  ]
+[2026-10-17T10:52:13.683Z] + _OLD_VIRTUAL_PS1=$ 
+[2026-10-17T10:52:13.683Z] + PS1=(.venv) $ 
+[2026-10-17T10:52:13.683Z] + export PS1
+[2026-10-17T10:52:13.683Z] + hash -r
+[2026-10-17T10:52:13.683Z] + pip install -r requirements.txt
+[2026-10-17T10:52:16.504Z] Collecting pytest==8.3.3 (from -r requirements.txt (line 1))
+[2026-10-17T10:52:16.504Z]   Using cached pytest-8.3.3-py3-none-any.whl.metadata (7.5 kB)
+[2026-10-17T10:52:16.504Z] Collecting iniconfig (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:52:16.504Z]   Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+[2026-10-17T10:52:16.757Z] Collecting packaging (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:52:16.757Z]   Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+[2026-10-17T10:52:17.015Z] Collecting pluggy<2,>=1.5 (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:52:17.274Z]   Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+[2026-10-17T10:52:17.274Z] Using cached pytest-8.3.3-py3-none-any.whl (342 kB)
+[2026-10-17T10:52:17.274Z] Using cached pluggy-1.7.0-py3-none-any.whl (27 kB)
+[2026-10-17T10:52:17.274Z] Using cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+[2026-10-17T10:52:17.274Z] Using cached packaging-26.3-py3-none-any.whl (129 kB)
+[2026-10-17T10:52:17.528Z] Installing collected packages: pluggy, packaging, iniconfig, pytest
+[2026-10-17T10:52:22.815Z] 
+[2026-10-17T10:52:22.815Z] Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pytest-8.3.3
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] dir
+[2026-10-17T10:52:29.670Z] Running in /var/jenkins_home/workspace/calculator_fail_broken-test/sample-app
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:52:30.314Z] + . .venv/bin/activate
+[2026-10-17T10:52:30.314Z] + deactivate nondestructive
+[2026-10-17T10:52:30.314Z] + [ -n  ]
+[2026-10-17T10:52:30.315Z] + [ -n  ]
+[2026-10-17T10:52:30.315Z] + hash -r
+[2026-10-17T10:52:30.315Z] + [ -n  ]
+[2026-10-17T10:52:30.316Z] + unset VIRTUAL_ENV
+[2026-10-17T10:52:30.316Z] + unset VIRTUAL_ENV_PROMPT
+[2026-10-17T10:52:30.316Z] + [ ! nondestructive = nondestructive ]
+[2026-10-17T10:52:30.316Z] + uname
+[2026-10-17T10:52:30.316Z] + export VIRTUAL_ENV=/var/jenkins_home/workspace/calculator_fail_broken-test/sample-app/.venv
+[2026-10-17T10:52:30.316Z] + _OLD_VIRTUAL_PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:52:30.316Z] + PATH=/var/jenkins_home/workspace/calculator_fail_broken-test/sample-app/.venv/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:52:30.316Z] + export PATH
+[2026-10-17T10:52:30.317Z] + VIRTUAL_ENV_PROMPT=.venv
+[2026-10-17T10:52:30.317Z] + export VIRTUAL_ENV_PROMPT
+[2026-10-17T10:52:30.317Z] + [ -n  ]
+[2026-10-17T10:52:30.317Z] + [ -z  ]
+[2026-10-17T10:52:30.317Z] + _OLD_VIRTUAL_PS1=$ 
+[2026-10-17T10:52:30.317Z] + PS1=(.venv) $ 
+[2026-10-17T10:52:30.317Z] + export PS1
+[2026-10-17T10:52:30.317Z] + hash -r
+[2026-10-17T10:52:30.318Z] + python -m pytest -v --junitxml=test-results.xml
+[2026-10-17T10:52:32.204Z] ============================= test session starts ==============================
+[2026-10-17T10:52:32.205Z] platform linux -- Python 3.13.5, pytest-8.3.3, pluggy-1.7.0 -- /var/jenkins_home/workspace/calculator_fail_broken-test/sample-app/.venv/bin/python
+[2026-10-17T10:52:32.205Z] cachedir: .pytest_cache
+[2026-10-17T10:52:32.207Z] rootdir: /var/jenkins_home/workspace/calculator_fail_broken-test/sample-app
+[2026-10-17T10:52:35.488Z] collecting ... collected 5 items
+[2026-10-17T10:52:35.488Z] 
+[2026-10-17T10:52:35.488Z] tests/test_calculator.py::test_add PASSED                                [ 20%]
+[2026-10-17T10:52:35.489Z] tests/test_calculator.py::test_subtract FAILED                           [ 40%]
+[2026-10-17T10:52:35.489Z] tests/test_calculator.py::test_multiply PASSED                           [ 60%]
+[2026-10-17T10:52:35.489Z] tests/test_calculator.py::test_divide PASSED                             [ 80%]
+[2026-10-17T10:52:35.489Z] tests/test_calculator.py::test_divide_by_zero PASSED                     [100%]
+[2026-10-17T10:52:35.490Z] 
+[2026-10-17T10:52:35.490Z] =================================== FAILURES ===================================
+[2026-10-17T10:52:35.490Z] ________________________________ test_subtract _________________________________
+[2026-10-17T10:52:35.490Z] 
+[2026-10-17T10:52:35.491Z]     def test_subtract():
+[2026-10-17T10:52:35.491Z] >       assert subtract(10, 4) == 6
+[2026-10-17T10:52:35.491Z] E       assert 14 == 6
+[2026-10-17T10:52:35.491Z] E        +  where 14 = subtract(10, 4)
+[2026-10-17T10:52:35.491Z] 
+[2026-10-17T10:52:35.491Z] tests/test_calculator.py:11: AssertionError
+[2026-10-17T10:52:35.491Z] - generated xml file: /var/jenkins_home/workspace/calculator_fail_broken-test/sample-app/test-results.xml -
+[2026-10-17T10:52:35.491Z] =========================== short test summary info ============================
+[2026-10-17T10:52:35.492Z] FAILED tests/test_calculator.py::test_subtract - assert 14 == 6
+[2026-10-17T10:52:35.492Z]  +  where 14 = subtract(10, 4)
+[2026-10-17T10:52:35.492Z] ========================= 1 failed, 4 passed in 3.52s ==========================
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Terraform Plan)
+Stage "Terraform Plan" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Smoke Test)
+Stage "Smoke Test" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+Stage "Deploy" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] junit
+[2026-10-17T10:52:44.068Z] Recording test results
+[2026-10-17T10:52:44.438Z] [Checks API] No suitable checks publisher found.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: script returned exit code 1
+Finished: FAILURE

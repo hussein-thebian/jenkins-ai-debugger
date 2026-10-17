@@ -1,0 +1,11 @@
+{
+  "case": "broken-test",
+  "branch": "fail/broken-test",
+  "expected_result": "FAILURE",
+  "failed_stage": "Test",
+  "category": "test_failure",
+  "root_cause": "subtract() in sample-app/app/calculator.py returns a + b instead of a - b, so test_subtract fails (14 != 6).",
+  "key_evidence": "assert 14 == 6 where 14 = subtract(10, 4)",
+  "correct_fix": "Change subtract() back to 'return a - b' in sample-app/app/calculator.py.",
+  "wrong_fixes": ["Changing the test to expect 14", "Deleting or skipping test_subtract"]
+}

@@ -1,0 +1,11 @@
+{
+  "case": "missing-credential",
+  "branch": "fail/missing-credential",
+  "expected_result": "FAILURE",
+  "failed_stage": "Deploy",
+  "category": "credential_error",
+  "root_cause": "The Deploy stage in sample-app/Jenkinsfile references credentialsId 'deploy-tokn', which does not exist. The correct ID is 'deploy-token'.",
+  "key_evidence": "ERROR: Could not find credentials entry with ID 'deploy-tokn'",
+  "correct_fix": "Correct the credentialsId to 'deploy-token' in sample-app/Jenkinsfile.",
+  "wrong_fixes": ["Creating a new credential named 'deploy-tokn'", "Removing the withCredentials block"]
+}

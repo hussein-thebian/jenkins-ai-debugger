@@ -1,0 +1,237 @@
+Branch indexing
+ > git rev-parse --resolve-git-dir /var/jenkins_home/caches/git-ce27b5a5b8247e7996aa866f991fdb7c/.git # timeout=10
+Setting origin to file:///repo
+ > git config remote.origin.url file:///repo # timeout=10
+Fetching origin...
+Fetching upstream changes from origin
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git config --get remote.origin.url # timeout=10
+ > git fetch --no-tags --force --progress -- origin +refs/heads/*:refs/remotes/origin/* # timeout=10
+Seen branch in repository origin/fail/bad-terraform
+Seen branch in repository origin/fail/broken-test
+Seen branch in repository origin/fail/missing-credential
+Seen branch in repository origin/fail/timeout
+Seen branch in repository origin/main
+Seen 5 remote branches
+Obtained sample-app/Jenkinsfile from 4a1b8a27af29f88f584faba02f4cd623dd4562fa
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/lculator_fail_missing-credential
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning with configured refspecs honoured and without tags
+Cloning repository file:///repo
+ > git init /var/jenkins_home/workspace/lculator_fail_missing-credential # timeout=10
+Fetching upstream changes from file:///repo
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- file:///repo +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url file:///repo # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision 4a1b8a27af29f88f584faba02f4cd623dd4562fa (fail/missing-credential)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 4a1b8a27af29f88f584faba02f4cd623dd4562fa # timeout=10
+Commit message: "Update deploy stage credential binding"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] timeout
+[2026-10-17T10:50:42.733Z] Timeout set to expire in 10 min
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Setup)
+[Pipeline] dir
+[2026-10-17T10:50:43.265Z] Running in /var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:50:43.812Z] + python3 -m venv .venv
+[2026-10-17T10:51:15.783Z] + . .venv/bin/activate
+[2026-10-17T10:51:15.784Z] + deactivate nondestructive
+[2026-10-17T10:51:15.785Z] + [ -n  ]
+[2026-10-17T10:51:15.785Z] + [ -n  ]
+[2026-10-17T10:51:15.785Z] + hash -r
+[2026-10-17T10:51:15.785Z] + [ -n  ]
+[2026-10-17T10:51:15.785Z] + unset VIRTUAL_ENV
+[2026-10-17T10:51:15.785Z] + unset VIRTUAL_ENV_PROMPT
+[2026-10-17T10:51:15.785Z] + [ ! nondestructive = nondestructive ]
+[2026-10-17T10:51:15.785Z] + uname
+[2026-10-17T10:51:15.785Z] + export VIRTUAL_ENV=/var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app/.venv
+[2026-10-17T10:51:15.785Z] + _OLD_VIRTUAL_PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:51:15.785Z] + PATH=/var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app/.venv/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:51:15.785Z] + export PATH
+[2026-10-17T10:51:15.785Z] + VIRTUAL_ENV_PROMPT=.venv
+[2026-10-17T10:51:15.785Z] + export VIRTUAL_ENV_PROMPT
+[2026-10-17T10:51:15.785Z] + [ -n  ]
+[2026-10-17T10:51:15.785Z] + [ -z  ]
+[2026-10-17T10:51:15.785Z] + _OLD_VIRTUAL_PS1=$ 
+[2026-10-17T10:51:15.785Z] + PS1=(.venv) $ 
+[2026-10-17T10:51:15.785Z] + export PS1
+[2026-10-17T10:51:15.785Z] + hash -r
+[2026-10-17T10:51:15.785Z] + pip install -r requirements.txt
+[2026-10-17T10:51:17.667Z] Collecting pytest==8.3.3 (from -r requirements.txt (line 1))
+[2026-10-17T10:51:17.668Z]   Using cached pytest-8.3.3-py3-none-any.whl.metadata (7.5 kB)
+[2026-10-17T10:51:17.668Z] Collecting iniconfig (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:51:17.668Z]   Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+[2026-10-17T10:51:17.922Z] Collecting packaging (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:51:17.923Z]   Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+[2026-10-17T10:51:18.177Z] Collecting pluggy<2,>=1.5 (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:51:19.095Z]   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+[2026-10-17T10:51:19.095Z] Using cached pytest-8.3.3-py3-none-any.whl (342 kB)
+[2026-10-17T10:51:19.348Z] Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+[2026-10-17T10:51:19.601Z] Using cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+[2026-10-17T10:51:19.602Z] Using cached packaging-26.3-py3-none-any.whl (129 kB)
+[2026-10-17T10:51:19.605Z] Installing collected packages: pluggy, packaging, iniconfig, pytest
+[2026-10-17T10:51:23.755Z] 
+[2026-10-17T10:51:23.756Z] Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pytest-8.3.3
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] dir
+[2026-10-17T10:51:25.962Z] Running in /var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:51:26.809Z] + . .venv/bin/activate
+[2026-10-17T10:51:26.810Z] + deactivate nondestructive
+[2026-10-17T10:51:26.810Z] + [ -n  ]
+[2026-10-17T10:51:26.810Z] + [ -n  ]
+[2026-10-17T10:51:26.810Z] + hash -r
+[2026-10-17T10:51:26.810Z] + [ -n  ]
+[2026-10-17T10:51:26.810Z] + unset VIRTUAL_ENV
+[2026-10-17T10:51:26.810Z] + unset VIRTUAL_ENV_PROMPT
+[2026-10-17T10:51:26.810Z] + [ ! nondestructive = nondestructive ]
+[2026-10-17T10:51:26.810Z] + uname
+[2026-10-17T10:51:26.810Z] + export VIRTUAL_ENV=/var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app/.venv
+[2026-10-17T10:51:26.810Z] + _OLD_VIRTUAL_PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:51:26.810Z] + PATH=/var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app/.venv/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:51:26.810Z] + export PATH
+[2026-10-17T10:51:26.810Z] + VIRTUAL_ENV_PROMPT=.venv
+[2026-10-17T10:51:26.810Z] + export VIRTUAL_ENV_PROMPT
+[2026-10-17T10:51:26.810Z] + [ -n  ]
+[2026-10-17T10:51:26.810Z] + [ -z  ]
+[2026-10-17T10:51:26.811Z] + _OLD_VIRTUAL_PS1=$ 
+[2026-10-17T10:51:26.811Z] + PS1=(.venv) $ 
+[2026-10-17T10:51:26.811Z] + export PS1
+[2026-10-17T10:51:26.811Z] + hash -r
+[2026-10-17T10:51:26.811Z] + python -m pytest -v --junitxml=test-results.xml
+[2026-10-17T10:51:28.185Z] ============================= test session starts ==============================
+[2026-10-17T10:51:28.185Z] platform linux -- Python 3.13.5, pytest-8.3.3, pluggy-1.7.0 -- /var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app/.venv/bin/python
+[2026-10-17T10:51:28.186Z] cachedir: .pytest_cache
+[2026-10-17T10:51:28.186Z] rootdir: /var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app
+[2026-10-17T10:51:31.435Z] collecting ... collected 5 items
+[2026-10-17T10:51:31.435Z] 
+[2026-10-17T10:51:31.442Z] tests/test_calculator.py::test_add PASSED                                [ 20%]
+[2026-10-17T10:51:31.442Z] tests/test_calculator.py::test_subtract PASSED                           [ 40%]
+[2026-10-17T10:51:31.442Z] tests/test_calculator.py::test_multiply PASSED                           [ 60%]
+[2026-10-17T10:51:31.442Z] tests/test_calculator.py::test_divide PASSED                             [ 80%]
+[2026-10-17T10:51:31.442Z] tests/test_calculator.py::test_divide_by_zero PASSED                     [100%]
+[2026-10-17T10:51:31.442Z] 
+[2026-10-17T10:51:31.442Z] - generated xml file: /var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app/test-results.xml -
+[2026-10-17T10:51:31.442Z] ============================== 5 passed in 3.35s ===============================
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Terraform Plan)
+[Pipeline] dir
+[2026-10-17T10:51:33.311Z] Running in /var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app/infra
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:51:33.961Z] + terraform fmt -check
+[2026-10-17T10:51:37.206Z] + terraform init -input=false -no-color
+[2026-10-17T10:51:37.469Z] Initializing the backend...
+[2026-10-17T10:51:37.469Z] 
+[2026-10-17T10:51:37.725Z] Initializing provider plugins...
+[2026-10-17T10:51:37.725Z] 
+[2026-10-17T10:51:37.725Z] Terraform has been successfully initialized!
+[2026-10-17T10:51:37.725Z] 
+[2026-10-17T10:51:37.725Z] You may now begin working with Terraform. Try running "terraform plan" to see
+[2026-10-17T10:51:37.725Z] any changes that are required for your infrastructure. All Terraform commands
+[2026-10-17T10:51:37.725Z] should now work.
+[2026-10-17T10:51:37.725Z] 
+[2026-10-17T10:51:37.725Z] If you ever set or change modules or backend configuration for Terraform,
+[2026-10-17T10:51:37.725Z] rerun this command to reinitialize your working directory. If you forget, other
+[2026-10-17T10:51:37.725Z] commands will detect it and remind you to do so if necessary.
+[2026-10-17T10:51:37.725Z] + terraform validate -no-color
+[2026-10-17T10:51:38.280Z] Success! The configuration is valid.
+[2026-10-17T10:51:38.281Z] 
+[2026-10-17T10:51:38.281Z] + terraform plan -input=false -no-color
+[2026-10-17T10:51:38.841Z] 
+[2026-10-17T10:51:38.841Z] Changes to Outputs:
+[2026-10-17T10:51:38.842Z]   + app_name = "calculator-dev"
+[2026-10-17T10:51:38.842Z]   + servers  = [
+[2026-10-17T10:51:38.842Z]       + "calculator-dev-1",
+[2026-10-17T10:51:38.842Z]       + "calculator-dev-2",
+[2026-10-17T10:51:38.842Z]     ]
+[2026-10-17T10:51:38.842Z] 
+[2026-10-17T10:51:38.842Z] You can apply this plan to save these new output values to the Terraform
+[2026-10-17T10:51:38.842Z] state, without changing any real infrastructure.
+[2026-10-17T10:51:38.842Z] 
+[2026-10-17T10:51:38.842Z] ─────────────────────────────────────────────────────────────────────────────
+[2026-10-17T10:51:38.842Z] 
+[2026-10-17T10:51:38.842Z] Note: You didn't use the -out option to save this plan, so Terraform can't
+[2026-10-17T10:51:38.842Z] guarantee to take exactly these actions if you run "terraform apply" now.
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Smoke Test)
+[Pipeline] timeout
+[2026-10-17T10:51:40.204Z] Timeout set to expire in 1 min 0 sec
+[Pipeline] {
+[Pipeline] dir
+[2026-10-17T10:51:40.607Z] Running in /var/jenkins_home/workspace/lculator_fail_missing-credential/sample-app
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:51:41.352Z] + python3 scripts/smoke_test.py
+[2026-10-17T10:51:41.352Z] Waiting 3s for the service to become healthy...
+[2026-10-17T10:51:42.278Z]   still waiting... 1s
+[2026-10-17T10:51:43.244Z]   still waiting... 2s
+[2026-10-17T10:51:44.595Z]   still waiting... 3s
+[2026-10-17T10:51:44.595Z] Service is healthy
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] withCredentials
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] junit
+[2026-10-17T10:51:49.117Z] Recording test results
+[2026-10-17T10:51:49.378Z] [Checks API] No suitable checks publisher found.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: Could not find credentials entry with ID 'deploy-tokn'
+Finished: FAILURE

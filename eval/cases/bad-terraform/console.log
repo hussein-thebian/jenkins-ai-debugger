@@ -1,0 +1,214 @@
+Branch indexing
+ > git rev-parse --resolve-git-dir /var/jenkins_home/caches/git-ce27b5a5b8247e7996aa866f991fdb7c/.git # timeout=10
+Setting origin to file:///repo
+ > git config remote.origin.url file:///repo # timeout=10
+Fetching origin...
+Fetching upstream changes from origin
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git config --get remote.origin.url # timeout=10
+ > git fetch --no-tags --force --progress -- origin +refs/heads/*:refs/remotes/origin/* # timeout=10
+Seen branch in repository origin/fail/bad-terraform
+Seen branch in repository origin/fail/broken-test
+Seen branch in repository origin/fail/missing-credential
+Seen branch in repository origin/fail/timeout
+Seen branch in repository origin/main
+Seen 5 remote branches
+Obtained sample-app/Jenkinsfile from b7565223f08ee4c3336a7775248ffcfb7e25fd61
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Still waiting to schedule task
+Waiting for next available executor
+Running on Jenkins in /var/jenkins_home/workspace/calculator_fail_bad-terraform
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning with configured refspecs honoured and without tags
+Cloning repository file:///repo
+ > git init /var/jenkins_home/workspace/calculator_fail_bad-terraform # timeout=10
+Fetching upstream changes from file:///repo
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- file:///repo +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url file:///repo # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision b7565223f08ee4c3336a7775248ffcfb7e25fd61 (fail/bad-terraform)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f b7565223f08ee4c3336a7775248ffcfb7e25fd61 # timeout=10
+Commit message: "Simplify environment naming in Terraform locals"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] timeout
+[2026-10-17T10:52:49.234Z] Timeout set to expire in 10 min
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Setup)
+[Pipeline] dir
+[2026-10-17T10:52:50.489Z] Running in /var/jenkins_home/workspace/calculator_fail_bad-terraform/sample-app
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:52:51.355Z] + python3 -m venv .venv
+[2026-10-17T10:53:09.321Z] + . .venv/bin/activate
+[2026-10-17T10:53:09.321Z] + deactivate nondestructive
+[2026-10-17T10:53:09.321Z] + [ -n  ]
+[2026-10-17T10:53:09.321Z] + [ -n  ]
+[2026-10-17T10:53:09.321Z] + hash -r
+[2026-10-17T10:53:09.321Z] + [ -n  ]
+[2026-10-17T10:53:09.321Z] + unset VIRTUAL_ENV
+[2026-10-17T10:53:09.321Z] + unset VIRTUAL_ENV_PROMPT
+[2026-10-17T10:53:09.321Z] + [ ! nondestructive = nondestructive ]
+[2026-10-17T10:53:09.321Z] + uname
+[2026-10-17T10:53:09.321Z] + export VIRTUAL_ENV=/var/jenkins_home/workspace/calculator_fail_bad-terraform/sample-app/.venv
+[2026-10-17T10:53:09.321Z] + _OLD_VIRTUAL_PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:53:09.321Z] + PATH=/var/jenkins_home/workspace/calculator_fail_bad-terraform/sample-app/.venv/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:53:09.321Z] + export PATH
+[2026-10-17T10:53:09.321Z] + VIRTUAL_ENV_PROMPT=.venv
+[2026-10-17T10:53:09.321Z] + export VIRTUAL_ENV_PROMPT
+[2026-10-17T10:53:09.321Z] + [ -n  ]
+[2026-10-17T10:53:09.321Z] + [ -z  ]
+[2026-10-17T10:53:09.321Z] + _OLD_VIRTUAL_PS1=$ 
+[2026-10-17T10:53:09.321Z] + PS1=(.venv) $ 
+[2026-10-17T10:53:09.321Z] + export PS1
+[2026-10-17T10:53:09.321Z] + hash -r
+[2026-10-17T10:53:09.321Z] + pip install -r requirements.txt
+[2026-10-17T10:53:11.817Z] Collecting pytest==8.3.3 (from -r requirements.txt (line 1))
+[2026-10-17T10:53:11.817Z]   Using cached pytest-8.3.3-py3-none-any.whl.metadata (7.5 kB)
+[2026-10-17T10:53:11.817Z] Collecting iniconfig (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:53:12.069Z]   Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+[2026-10-17T10:53:12.070Z] Collecting packaging (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:53:12.070Z]   Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+[2026-10-17T10:53:12.322Z] Collecting pluggy<2,>=1.5 (from pytest==8.3.3->-r requirements.txt (line 1))
+[2026-10-17T10:53:12.322Z]   Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+[2026-10-17T10:53:12.322Z] Using cached pytest-8.3.3-py3-none-any.whl (342 kB)
+[2026-10-17T10:53:12.322Z] Using cached pluggy-1.7.0-py3-none-any.whl (27 kB)
+[2026-10-17T10:53:12.322Z] Using cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+[2026-10-17T10:53:12.322Z] Using cached packaging-26.3-py3-none-any.whl (129 kB)
+[2026-10-17T10:53:12.574Z] Installing collected packages: pluggy, packaging, iniconfig, pytest
+[2026-10-17T10:53:15.066Z] 
+[2026-10-17T10:53:15.066Z] Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pytest-8.3.3
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] dir
+[2026-10-17T10:53:15.626Z] Running in /var/jenkins_home/workspace/calculator_fail_bad-terraform/sample-app
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:53:16.048Z] + . .venv/bin/activate
+[2026-10-17T10:53:16.049Z] + deactivate nondestructive
+[2026-10-17T10:53:16.049Z] + [ -n  ]
+[2026-10-17T10:53:16.049Z] + [ -n  ]
+[2026-10-17T10:53:16.049Z] + hash -r
+[2026-10-17T10:53:16.049Z] + [ -n  ]
+[2026-10-17T10:53:16.049Z] + unset VIRTUAL_ENV
+[2026-10-17T10:53:16.049Z] + unset VIRTUAL_ENV_PROMPT
+[2026-10-17T10:53:16.049Z] + [ ! nondestructive = nondestructive ]
+[2026-10-17T10:53:16.049Z] + uname
+[2026-10-17T10:53:16.049Z] + export VIRTUAL_ENV=/var/jenkins_home/workspace/calculator_fail_bad-terraform/sample-app/.venv
+[2026-10-17T10:53:16.049Z] + _OLD_VIRTUAL_PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:53:16.049Z] + PATH=/var/jenkins_home/workspace/calculator_fail_bad-terraform/sample-app/.venv/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-10-17T10:53:16.049Z] + export PATH
+[2026-10-17T10:53:16.049Z] + VIRTUAL_ENV_PROMPT=.venv
+[2026-10-17T10:53:16.049Z] + export VIRTUAL_ENV_PROMPT
+[2026-10-17T10:53:16.049Z] + [ -n  ]
+[2026-10-17T10:53:16.049Z] + [ -z  ]
+[2026-10-17T10:53:16.049Z] + _OLD_VIRTUAL_PS1=$ 
+[2026-10-17T10:53:16.049Z] + PS1=(.venv) $ 
+[2026-10-17T10:53:16.049Z] + export PS1
+[2026-10-17T10:53:16.049Z] + hash -r
+[2026-10-17T10:53:16.049Z] + python -m pytest -v --junitxml=test-results.xml
+[2026-10-17T10:53:17.398Z] ============================= test session starts ==============================
+[2026-10-17T10:53:17.398Z] platform linux -- Python 3.13.5, pytest-8.3.3, pluggy-1.7.0 -- /var/jenkins_home/workspace/calculator_fail_bad-terraform/sample-app/.venv/bin/python
+[2026-10-17T10:53:17.398Z] cachedir: .pytest_cache
+[2026-10-17T10:53:17.398Z] rootdir: /var/jenkins_home/workspace/calculator_fail_bad-terraform/sample-app
+[2026-10-17T10:53:20.636Z] collecting ... collected 5 items
+[2026-10-17T10:53:20.636Z] 
+[2026-10-17T10:53:20.636Z] tests/test_calculator.py::test_add PASSED                                [ 20%]
+[2026-10-17T10:53:20.636Z] tests/test_calculator.py::test_subtract PASSED                           [ 40%]
+[2026-10-17T10:53:20.636Z] tests/test_calculator.py::test_multiply PASSED                           [ 60%]
+[2026-10-17T10:53:20.636Z] tests/test_calculator.py::test_divide PASSED                             [ 80%]
+[2026-10-17T10:53:20.636Z] tests/test_calculator.py::test_divide_by_zero PASSED                     [100%]
+[2026-10-17T10:53:20.636Z] 
+[2026-10-17T10:53:20.636Z] - generated xml file: /var/jenkins_home/workspace/calculator_fail_bad-terraform/sample-app/test-results.xml -
+[2026-10-17T10:53:20.636Z] ============================== 5 passed in 3.17s ===============================
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Terraform Plan)
+[Pipeline] dir
+[2026-10-17T10:53:21.356Z] Running in /var/jenkins_home/workspace/calculator_fail_bad-terraform/sample-app/infra
+[Pipeline] {
+[Pipeline] sh
+[2026-10-17T10:53:21.835Z] + terraform fmt -check
+[2026-10-17T10:53:23.702Z] + terraform init -input=false -no-color
+[2026-10-17T10:53:23.702Z] Initializing the backend...
+[2026-10-17T10:53:23.702Z] 
+[2026-10-17T10:53:23.702Z] Initializing provider plugins...
+[2026-10-17T10:53:23.702Z] 
+[2026-10-17T10:53:23.702Z] Terraform has been successfully initialized!
+[2026-10-17T10:53:23.702Z] 
+[2026-10-17T10:53:23.702Z] You may now begin working with Terraform. Try running "terraform plan" to see
+[2026-10-17T10:53:23.702Z] any changes that are required for your infrastructure. All Terraform commands
+[2026-10-17T10:53:23.702Z] should now work.
+[2026-10-17T10:53:23.702Z] 
+[2026-10-17T10:53:23.703Z] If you ever set or change modules or backend configuration for Terraform,
+[2026-10-17T10:53:23.703Z] rerun this command to reinitialize your working directory. If you forget, other
+[2026-10-17T10:53:23.703Z] commands will detect it and remind you to do so if necessary.
+[2026-10-17T10:53:23.955Z] + terraform validate -no-color
+[2026-10-17T10:53:24.207Z] 
+[2026-10-17T10:53:24.207Z] Error: Reference to undeclared input variable
+[2026-10-17T10:53:24.207Z] 
+[2026-10-17T10:53:24.207Z]   on main.tf line 12, in locals:
+[2026-10-17T10:53:24.207Z]   12:   app_name = "calculator-${var.env}"
+[2026-10-17T10:53:24.207Z] 
+[2026-10-17T10:53:24.207Z] An input variable with the name "env" has not been declared. This variable
+[2026-10-17T10:53:24.207Z] can be declared with a variable "env" {} block.
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Smoke Test)
+Stage "Smoke Test" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+Stage "Deploy" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] junit
+[2026-10-17T10:53:25.757Z] Recording test results
+[2026-10-17T10:53:25.856Z] [Checks API] No suitable checks publisher found.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: script returned exit code 1
+Finished: FAILURE

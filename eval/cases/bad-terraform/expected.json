@@ -1,0 +1,11 @@
+{
+  "case": "bad-terraform",
+  "branch": "fail/bad-terraform",
+  "expected_result": "FAILURE",
+  "failed_stage": "Terraform Plan",
+  "category": "terraform_error",
+  "root_cause": "locals in sample-app/infra/main.tf reference var.env, but only var.environment is declared.",
+  "key_evidence": "Error: Reference to undeclared input variable ... main.tf line 12 ... var.env",
+  "correct_fix": "Change var.env back to var.environment in sample-app/infra/main.tf.",
+  "wrong_fixes": ["Adding a new variable \"env\" that duplicates environment"]
+}
