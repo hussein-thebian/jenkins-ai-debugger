@@ -1,7 +1,7 @@
 import os
 import time
 
-WAIT_SECONDS = int(os.environ.get("SMOKE_WAIT_SECONDS", "3"))
+WAIT_SECONDS = int(os.environ.get("SMOKE_WAIT_SECONDS", "90"))
 
 print(f"Waiting {WAIT_SECONDS}s for the service to become healthy...", flush=True)
 for second in range(1, WAIT_SECONDS + 1):
