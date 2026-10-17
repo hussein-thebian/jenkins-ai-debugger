@@ -9,7 +9,7 @@ variable "instance_count" {
 }
 
 locals {
-  app_name = "calculator-${var.environment}"
+  app_name = "calculator-${var.env}"
   servers  = [for i in range(var.instance_count) : "${local.app_name}-${i + 1}"]
 }
 
