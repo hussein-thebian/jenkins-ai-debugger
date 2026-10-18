@@ -1,3 +1,4 @@
+import argparse
 import sys
 from pathlib import Path
 from typing import Literal
@@ -5,6 +6,8 @@ from typing import Literal
 import anthropic
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
+
+from trim_log import trim_log
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(PROJECT_ROOT / ".env")
@@ -66,11 +69,17 @@ def diagnose(log_text: str):
 
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python diagnose.py <path-to-console.log>", file=sys.stderr)
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Diagnose a failed Jenkins build log with Claude.")
+    parser.add_argument("log_path", help="path to a Jenkins console log")
+    parser.add_argument("--raw", action="store_true", help="send the full log without trimming")
+    args = parser.parse_args()
 
-    log_text = Path(sys.argv[1]).read_text()
+    log_text = Path(args.log_path).read_text()
+    original_lines = len(log_text.splitlines())
+    if not args.raw:
+        log_text = trim_log(log_text)
+    sent_lines = len(log_text.splitlines())
+
     response = diagnose(log_text)
 
     if response.parsed_output is None:
@@ -82,8 +91,10 @@ def main():
     usage = response.usage
     cost = (usage.input_tokens * PRICE_INPUT_PER_MTOK + usage.output_tokens * PRICE_OUTPUT_PER_MTOK) / 1_000_000
     block_types = [block.type for block in response.content]
+    mode = "raw" if args.raw else "trimmed"
     print(
-        f"\n---\nBlocks: {block_types} | stop_reason: {response.stop_reason}\n"
+        f"\n---\nLog lines: {original_lines} -> {sent_lines} ({mode})\n"
+        f"Blocks: {block_types} | stop_reason: {response.stop_reason}\n"
         f"Tokens: input={usage.input_tokens}, output={usage.output_tokens} | cost ≈ ${cost:.4f}",
         file=sys.stderr,
     )
