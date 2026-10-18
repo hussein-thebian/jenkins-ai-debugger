@@ -1,8 +1,10 @@
 import sys
 from pathlib import Path
+from typing import Literal
 
 import anthropic
 from dotenv import load_dotenv
+from pydantic import BaseModel, Field
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(PROJECT_ROOT / ".env")
@@ -14,28 +16,42 @@ PRICE_OUTPUT_PER_MTOK = 10.00
 SYSTEM_PROMPT = """You are an expert CI/CD engineer who diagnoses failed Jenkins pipeline builds.
 
 You will receive the full console log of one failed build. Your job:
-1. Identify the stage that failed.
+1. Identify the stage that failed and the final build result.
 2. Find the first real error: the root cause, not the generic lines that follow it (such as "script returned exit code 1").
 3. Explain the root cause in one or two sentences.
-4. Quote the key log line(s) that prove it.
+4. Quote the exact log lines that prove it.
 5. Suggest a concrete fix.
 
 Rules:
 - Fix the cause, not the symptom. Never suggest weakening or deleting a test, removing a timeout, or simply retrying as the fix.
-- If the log alone is not enough to be certain, say what else you would check.
-- Be concise."""
+- Separate what the log proves from what you assume. Anything you cannot see in the log (source code, file contents, the intent behind a change) goes in "assumptions".
+- Use confidence "high" only when the log alone proves both the root cause and the fix. Use "medium" or "low" when the fix depends on code or history you cannot see."""
 
 
-def main():
-    if len(sys.argv) != 2:
-        print("Usage: python diagnose.py <path-to-console.log>")
-        sys.exit(1)
+class Diagnosis(BaseModel):
+    failed_stage: str = Field(description="Name of the Jenkins stage that failed, exactly as shown in the log")
+    build_result: Literal["FAILURE", "ABORTED", "UNSTABLE"]
+    category: Literal[
+        "test_failure",
+        "credential_error",
+        "terraform_error",
+        "timeout",
+        "dependency_error",
+        "syntax_error",
+        "infrastructure_error",
+        "other",
+    ]
+    root_cause: str = Field(description="One or two sentences explaining why the build failed")
+    key_evidence: list[str] = Field(description="Exact log lines that prove the root cause")
+    suggested_fix: str = Field(description="The single best fix")
+    confidence: Literal["high", "medium", "low"]
+    assumptions: list[str] = Field(description="Things assumed because the log does not show them; empty if none")
+    next_checks: list[str] = Field(description="What a human should verify next")
 
-    log_path = Path(sys.argv[1])
-    log_text = log_path.read_text()
 
+def diagnose(log_text: str):
     client = anthropic.Anthropic()
-    response = client.messages.create(
+    return client.messages.parse(
         model=MODEL,
         max_tokens=4000,
         system=SYSTEM_PROMPT,
@@ -45,16 +61,33 @@ def main():
                 "content": f"Here is the console log of a failed Jenkins build:\n\n<console_log>\n{log_text}\n</console_log>",
             }
         ],
+        output_format=Diagnosis,
     )
 
-    answer = "".join(block.text for block in response.content if block.type == "text")
-    print(answer)
 
-    block_types = [block.type for block in response.content]
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: python diagnose.py <path-to-console.log>", file=sys.stderr)
+        sys.exit(1)
+
+    log_text = Path(sys.argv[1]).read_text()
+    response = diagnose(log_text)
+
+    if response.parsed_output is None:
+        print(f"No valid diagnosis returned (stop_reason: {response.stop_reason})", file=sys.stderr)
+        sys.exit(1)
+
+    print(response.parsed_output.model_dump_json(indent=2))
+
     usage = response.usage
     cost = (usage.input_tokens * PRICE_INPUT_PER_MTOK + usage.output_tokens * PRICE_OUTPUT_PER_MTOK) / 1_000_000
-    print(f"\n---\nBlocks: {block_types} | stop_reason: {response.stop_reason}")
-    print(f"Tokens: input={usage.input_tokens}, output={usage.output_tokens} | cost ≈ ${cost:.4f}")
+    block_types = [block.type for block in response.content]
+    print(
+        f"\n---\nBlocks: {block_types} | stop_reason: {response.stop_reason}\n"
+        f"Tokens: input={usage.input_tokens}, output={usage.output_tokens} | cost ≈ ${cost:.4f}",
+        file=sys.stderr,
+    )
+
 
 if __name__ == "__main__":
     main()
