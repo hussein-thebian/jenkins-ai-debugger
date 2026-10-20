@@ -6,6 +6,7 @@
   "category": "timeout",
   "root_cause": "The default SMOKE_WAIT_SECONDS in sample-app/scripts/smoke_test.py was changed from 3 to 90, which exceeds the Smoke Test stage's 1-minute timeout.",
   "key_evidence": "'Waiting 90s for the service to become healthy...' followed by 'Cancelling nested steps due to timeout' at about 60s",
-  "correct_fix": "Restore the default wait to 3 in sample-app/scripts/smoke_test.py, or, if the longer wait is intentional, raise the stage timeout above 90 seconds.",
+  "correct_fix": "Restore the default wait to 3 seconds in sample-app/scripts/smoke_test.py; the jump from 3 to 90 is the regression.",
+  "acceptable_fixes": ["Raise the Smoke Test stage timeout above 90 seconds, if the longer wait is genuinely intended"],
   "wrong_fixes": ["Removing the stage timeout entirely", "Simply retrying the build"]
 }
