@@ -1,0 +1,189 @@
+{
+  "version": "v2",
+  "judge_model": "claude-sonnet-5-5",
+  "total": 28,
+  "max": 28,
+  "results": [
+    {
+      "case": "bad-terraform",
+      "checks": {
+        "stage": true,
+        "result": true,
+        "category": true,
+        "root_cause": true
+      },
+      "fix_verdict": "correct",
+      "confidence": "high",
+      "overconfident": false,
+      "judge_explanation": "The diagnosis identifies the undeclared var.env reference in main.tf locals (only var.environment is declared) and proposes reverting line 12 to var.environment, matching the answer key.",
+      "points": 7,
+      "judge_cost": 0.003866,
+      "claude_code": {
+        "num_turns": 6,
+        "duration_ms": 23057,
+        "estimated_cost_usd": 0.18486140000000004
+      },
+      "diagnosis": {
+        "failed_stage": "Terraform Plan",
+        "build_result": "FAILURE",
+        "category": "terraform_error",
+        "root_cause": "Commit b756522 changed the local `app_name` to reference `var.env`, but the only declared input variable is `environment`, so `terraform validate` fails with 'Reference to undeclared input variable'.",
+        "key_evidence": [
+          "[10:53:23] + terraform validate -no-color",
+          "[10:53:24] Error: Reference to undeclared input variable",
+          "[10:53:24]   on main.tf line 12, in locals:",
+          "[10:53:24]   12:   app_name = \"calculator-${var.env}\"",
+          "[10:53:24] An input variable with the name \"env\" has not been declared.",
+          "diff: -  app_name = \"calculator-${var.environment}\"",
+          "diff: +  app_name = \"calculator-${var.env}\"",
+          "fail/bad-terraform:sample-app/infra/main.tf:1: variable \"environment\" {"
+        ],
+        "suggested_fix": "In sample-app/infra/main.tf line 12, restore the previous working reference: `app_name = \"calculator-${var.environment}\"`.",
+        "confidence": "high",
+        "assumptions": [
+          "Nothing outside sample-app (for example Jenkins job config or external tfvars) expects a variable named `env`; a grep of sample-app on the branch found no other references."
+        ],
+        "next_checks": [
+          "Run `terraform fmt -check && terraform validate` in sample-app/infra after the fix",
+          "Confirm `terraform plan` outputs app_name = \"calculator-dev\" as on main",
+          "If renaming to `env` was the goal, rename the variable declaration as well, and update any -var/tfvars callers"
+        ]
+      }
+    },
+    {
+      "case": "broken-test",
+      "checks": {
+        "stage": true,
+        "result": true,
+        "category": true,
+        "root_cause": true
+      },
+      "fix_verdict": "correct",
+      "confidence": "high",
+      "overconfident": false,
+      "judge_explanation": "The diagnosis identifies that subtract() was changed to return a + b, causing test_subtract to fail with 14 != 6, and suggests reverting it to a - b while leaving the test unchanged, matching the answer key.",
+      "points": 7,
+      "judge_cost": 0.003816,
+      "claude_code": {
+        "num_turns": 5,
+        "duration_ms": 19750,
+        "estimated_cost_usd": 0.1701554
+      },
+      "diagnosis": {
+        "failed_stage": "Test",
+        "build_result": "FAILURE",
+        "category": "test_failure",
+        "root_cause": "Commit 4446cb4 ('Refactor calculator arithmetic helpers') changed subtract() in sample-app/app/calculator.py from 'return a - b' to 'return a + b', so subtract now adds and test_subtract fails.",
+        "key_evidence": [
+          "tests/test_calculator.py::test_subtract FAILED                           [ 40%]",
+          ">       assert subtract(10, 4) == 6",
+          "E       assert 14 == 6",
+          "E        +  where 14 = subtract(10, 4)",
+          "========================= 1 failed, 4 passed in 3.52s ==========================",
+          "diff: -    return a - b",
+          "diff: +    return a + b",
+          "Commit message: \"Refactor calculator arithmetic helpers\""
+        ],
+        "suggested_fix": "In sample-app/app/calculator.py, change subtract() back to 'return a - b' (revert the one-line change from commit 4446cb4). Leave the test unchanged.",
+        "confidence": "high",
+        "assumptions": [],
+        "next_checks": [
+          "Re-run pytest locally on the fixed code and confirm all 5 tests pass",
+          "Confirm with the commit author that changing subtract's behaviour was not intended as part of the refactor",
+          "After the Test stage passes, confirm that the later stages (Terraform Plan, Smoke Test, Deploy), which were skipped, also pass"
+        ]
+      }
+    },
+    {
+      "case": "missing-credential",
+      "checks": {
+        "stage": true,
+        "result": true,
+        "category": true,
+        "root_cause": true
+      },
+      "fix_verdict": "correct",
+      "confidence": "high",
+      "overconfident": false,
+      "judge_explanation": "The diagnosis identifies the typo'd credentialsId 'deploy-tokn' in the Deploy stage and proposes changing it back to 'deploy-token' in sample-app/Jenkinsfile, matching the answer key.",
+      "points": 7,
+      "judge_cost": 0.00401,
+      "claude_code": {
+        "num_turns": 4,
+        "duration_ms": 14935,
+        "estimated_cost_usd": 0.1644592
+      },
+      "diagnosis": {
+        "failed_stage": "Deploy",
+        "build_result": "FAILURE",
+        "category": "credential_error",
+        "root_cause": "Commit 4a1b8a2 changed the Deploy stage's credential binding ID from 'deploy-token' to 'deploy-tokn', and no Jenkins credential has that ID. withCredentials failed before the deploy step could run.",
+        "key_evidence": [
+          "ERROR: Could not find credentials entry with ID 'deploy-tokn'",
+          "[Pipeline] { (Deploy)",
+          "[Pipeline] withCredentials",
+          "Commit message: \"Update deploy stage credential binding\"",
+          "-                withCredentials([string(credentialsId: 'deploy-token', variable: 'DEPLOY_TOKEN')]) {",
+          "+                withCredentials([string(credentialsId: 'deploy-tokn', variable: 'DEPLOY_TOKEN')]) {"
+        ],
+        "suggested_fix": "In sample-app/Jenkinsfile, Deploy stage, change credentialsId: 'deploy-tokn' back to credentialsId: 'deploy-token'.",
+        "confidence": "high",
+        "assumptions": [
+          "A credential with ID 'deploy-token' exists in Jenkins. This is inferred from main building green, not checked in Jenkins."
+        ],
+        "next_checks": [
+          "Check in Jenkins > Manage Credentials that 'deploy-token' exists as a Secret text credential the calculator job can use.",
+          "After the fix, check that the Deploy stage prints 'Deploying calculator (token length: N)' with N > 0."
+        ]
+      }
+    },
+    {
+      "case": "timeout",
+      "checks": {
+        "stage": true,
+        "result": true,
+        "category": true,
+        "root_cause": true
+      },
+      "fix_verdict": "correct",
+      "confidence": "high",
+      "overconfident": false,
+      "judge_explanation": "The diagnosis identifies the default SMOKE_WAIT_SECONDS change from 3 to 90 exceeding the 1-minute stage timeout, and its first-recommended fix restores the default to 3, matching the answer key.",
+      "points": 7,
+      "judge_cost": 0.004872,
+      "claude_code": {
+        "num_turns": 5,
+        "duration_ms": 20082,
+        "estimated_cost_usd": 0.19264520000000002
+      },
+      "diagnosis": {
+        "failed_stage": "Smoke Test",
+        "build_result": "ABORTED",
+        "category": "timeout",
+        "root_cause": "Commit 220b4ad changed the default SMOKE_WAIT_SECONDS in sample-app/scripts/smoke_test.py from 3 to 90, but the Smoke Test stage has a 1-minute timeout, so the script is always killed at about 60s and the build is aborted.",
+        "key_evidence": [
+          "[10:54:12] Timeout set to expire in 1 min 0 sec",
+          "[10:54:13] Waiting 90s for the service to become healthy...",
+          "[10:55:12]   still waiting... 59s",
+          "[10:55:12] Cancelling nested steps due to timeout",
+          "Finished: ABORTED",
+          "-WAIT_SECONDS = int(os.environ.get(\"SMOKE_WAIT_SECONDS\", \"3\"))",
+          "+WAIT_SECONDS = int(os.environ.get(\"SMOKE_WAIT_SECONDS\", \"90\"))",
+          "Jenkinsfile, stage('Smoke Test'): options { timeout(time: 1, unit: 'MINUTES') }",
+          "smoke_test.py: for second in range(1, WAIT_SECONDS + 1): time.sleep(1)"
+        ],
+        "suggested_fix": "Revert the default in sample-app/scripts/smoke_test.py to WAIT_SECONDS = int(os.environ.get(\"SMOKE_WAIT_SECONDS\", \"3\")). That brings the stage back well under its 1-minute timeout. If a slower environment really needs a longer wait, set SMOKE_WAIT_SECONDS there instead of raising the default.",
+        "confidence": "high",
+        "assumptions": [
+          "There is no real service whose startup needs more than about 3s. The script only sleeps and never checks health, so a longer wait doesn't make it more accurate.",
+          "The 90s pytest collection in the Test stage ('5 passed in 90.55s') is slowness in the environment or the Jenkins agent, not this commit, which only changes smoke_test.py."
+        ],
+        "next_checks": [
+          "Confirm with the commit author whether some environment actually needs a longer smoke wait. If it does, set SMOKE_WAIT_SECONDS for that environment and keep the wait under the stage timeout.",
+          "Compare the Test stage duration with a recent main build to see whether the 90s pytest collection is normal or a separate performance problem.",
+          "After the revert, check that the Smoke Test stage finishes in a few seconds and that Deploy runs."
+        ]
+      }
+    }
+  ]
+}
