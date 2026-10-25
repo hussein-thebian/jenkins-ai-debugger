@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.claude/skills/jenkins-debug/scripts/list_builds.sh)",
+      "Bash(.claude/skills/jenkins-debug/scripts/get_build_log.sh:*)",
+      "Bash(python3 .claude/skills/jenkins-debug/scripts/trim_log.py:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)",
+      "Bash(git status)",
+      "Bash(ls:*)",
+      "Bash(echo:*)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/expected.json)",
+      "Edit(**/eval/**)",
+      "Bash(git push:*)",
+      "Bash(git checkout:*)",
+      "Bash(git switch:*)",
+      "Bash(git reset:*)",
+      "Bash(curl:*)",
+      "Bash(cat .env)"
+    ]
+  }
+}
