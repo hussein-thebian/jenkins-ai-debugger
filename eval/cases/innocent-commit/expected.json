@@ -1,0 +1,17 @@
+{
+  "case": "innocent-commit",
+  "branch": "fail/innocent-commit",
+  "expected_result": "FAILURE",
+  "failed_stage": "Deploy",
+  "category": "credential_error",
+  "root_cause": "The Jenkins credential with ID 'deploy-token' no longer exists in the Jenkins credential store. The Jenkinsfile reference is correct and unchanged; the branch's only commit adds a README and is unrelated to the failure.",
+  "key_evidence": "ERROR: Could not find credentials entry with ID 'deploy-token', while the branch diff only adds sample-app/README.md and the Jenkinsfile's credentialsId is the same as on main",
+  "correct_fix": "Restore (re-create) the 'deploy-token' credential in Jenkins, or find out why it was removed; no code change is needed.",
+  "acceptable_fixes": [],
+  "wrong_fixes": [
+    "Reverting the README commit",
+    "Changing the credentialsId in the Jenkinsfile",
+    "Removing the withCredentials block",
+    "Simply retrying the build"
+  ]
+}

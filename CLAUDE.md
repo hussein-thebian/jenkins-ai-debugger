@@ -11,7 +11,7 @@ Learning project: an AI agent that diagnoses failed Jenkins pipeline builds.
 
 ## Git branches
 - `main` is always green.
-- `fail/broken-test`, `fail/missing-credential`, `fail/bad-terraform` and `fail/timeout` each add one commit that breaks the build.
+- `fail/*` branches are fixed test cases whose builds failed. Do not assume the branch's own changes caused the failure; verify it.
 - Inspect branches without switching: `git diff main...<branch>` (three dots: only the branch's own changes), `git log main..<branch>` (commits only on the branch), `git show <branch>:<path>`.- Inspect branches without switching: `git diff main..<branch>`, `git log main..<branch>`, `git show <branch>:<path>`.
 
 ## Jenkins
