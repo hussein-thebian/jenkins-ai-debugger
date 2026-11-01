@@ -22,5 +22,18 @@
       "Bash(curl:*)",
       "Bash(cat .env)"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Grep|Glob|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/block_secrets.py\""
+          }
+        ]
+      }
+    ]
   }
 }
