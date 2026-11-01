@@ -10,3 +10,6 @@ __pycache__/
 .terraform/
 *.tfstate
 *.tfstate.*
+
+# Generated diagnosis reports
+reports/
