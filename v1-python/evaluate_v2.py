@@ -6,7 +6,7 @@ import sys
 from datetime import datetime
 
 from diagnose import MODEL, PROJECT_ROOT, Diagnosis
-from evaluate import CASES_DIR, FIX_POINTS, MAX_POINTS_PER_CASE, RESULTS_DIR, cost_of, judge, mark, same
+from evaluate import CASES_DIR, FIX_POINTS, MAX_POINTS_PER_CASE, RESULTS_DIR, RUBRIC_VERSION, cost_of, judge, mark, same
 
 JSON_BLOCK = re.compile(r"```json\s*(\{.*?\})\s*```", re.DOTALL)
 BLOCK_JENKINS = "Bash(.claude/skills/jenkins-debug/scripts/get_build_log.sh:*)"
@@ -124,7 +124,7 @@ def main():
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     out_file = RESULTS_DIR / f"v2_{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
-    out_file.write_text(json.dumps({"version": "v2", "judge_model": MODEL, "total": total, "max": max_total, "results": results}, indent=2))
+    out_file.write_text(json.dumps({"version": "v2", "rubric": RUBRIC_VERSION, "judge_model": MODEL, "total": total, "max": max_total, "results": results}, indent=2))
     print(f"\nSaved {out_file.relative_to(PROJECT_ROOT)}", file=sys.stderr)
 
 

@@ -15,6 +15,7 @@ RESULTS_DIR = PROJECT_ROOT / "eval" / "results"
 
 FIX_POINTS = {"correct": 2, "acceptable": 1, "wrong": 0}
 MAX_POINTS_PER_CASE = 7
+RUBRIC_VERSION = "strict-fallbacks-v2"
 
 JUDGE_SYSTEM_PROMPT = """You grade an AI's diagnosis of a failed Jenkins build against an answer key written by a human expert.
 Judge meaning, not wording.
@@ -23,7 +24,9 @@ Judge meaning, not wording.
 - fix_verdict:
   "correct" if the suggested fix matches the answer key's correct fix.
   "acceptable" if it matches one of the answer key's acceptable_fixes, or is a reasonable alternative that would genuinely fix the problem without bad side effects.  "wrong" if it matches one of the answer key's wrong fixes, or would not fix the problem.
-  If the suggested fix offers several options, judge the first one it recommends.
+  If the suggested fix offers several options, judge the first one it recommends. If that first option is wrong, the verdict is "wrong", whatever the other options say.
+  If the first option is correct or acceptable, but another option it recommends (including fallbacks such as "or ...", "alternatively ...") matches one of the answer key's wrong_fixes, lower the verdict to "acceptable".
+  Things the diagnosis explicitly warns against ("do not ...") are not recommendations and must not be penalized.
 - explanation: one short sentence."""
 
 
@@ -133,7 +136,7 @@ def main():
     out_file = RESULTS_DIR / f"v1_{timestamp}.json"
     out_file.write_text(
         json.dumps(
-            {"version": "v1", "model": MODEL, "total": total, "max": max_total, "cost": total_cost, "results": results},
+            {"version": "v1", "rubric": RUBRIC_VERSION, "model": MODEL, "total": total, "max": max_total, "cost": total_cost, "results": results},
             indent=2,
         )
     )

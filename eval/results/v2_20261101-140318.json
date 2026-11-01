@@ -1,0 +1,242 @@
+{
+  "version": "v2",
+  "rubric": "strict-fallbacks",
+  "judge_model": "claude-sonnet-5-5",
+  "total": 35,
+  "max": 35,
+  "results": [
+    {
+      "case": "bad-terraform",
+      "checks": {
+        "stage": true,
+        "result": true,
+        "category": true,
+        "root_cause": true
+      },
+      "fix_verdict": "correct",
+      "confidence": "high",
+      "overconfident": false,
+      "judge_explanation": "The diagnosis identifies the undeclared var.env reference in main.tf locals and recommends restoring var.environment, which matches the answer key's correct fix.",
+      "points": 7,
+      "judge_cost": 0.003788,
+      "claude_code": {
+        "num_turns": 8,
+        "duration_ms": 16742,
+        "estimated_cost_usd": 0.1896214
+      },
+      "diagnosis": {
+        "failed_stage": "Terraform Plan",
+        "build_result": "FAILURE",
+        "category": "terraform_error",
+        "root_cause": "Commit b756522 changed the local app_name in sample-app/infra/main.tf to reference var.env, but only var.environment is declared. terraform validate therefore fails with an undeclared input variable error.",
+        "key_evidence": [
+          "[10:53:24] Error: Reference to undeclared input variable",
+          "[10:53:24]   on main.tf line 12, in locals:",
+          "[10:53:24]   12:   app_name = \"calculator-${var.env}\"",
+          "[10:53:24] An input variable with the name \"env\" has not been declared. This variable",
+          "-  app_name = \"calculator-${var.environment}\"",
+          "+  app_name = \"calculator-${var.env}\"",
+          "variable \"environment\" {",
+          "Commit message: \"Simplify environment naming in Terraform locals\""
+        ],
+        "suggested_fix": "In sample-app/infra/main.tf line 12, restore the previous working reference: app_name = \"calculator-${var.environment}\".",
+        "confidence": "high",
+        "assumptions": [],
+        "next_checks": [
+          "Run terraform validate and terraform plan in sample-app/infra with the fix to confirm that no further errors appear, since the failed validate meant plan never ran.",
+          "Confirm the Smoke Test and Deploy stages pass in a build with the fix, since both were skipped in this one."
+        ]
+      }
+    },
+    {
+      "case": "broken-test",
+      "checks": {
+        "stage": true,
+        "result": true,
+        "category": true,
+        "root_cause": true
+      },
+      "fix_verdict": "correct",
+      "confidence": "high",
+      "overconfident": false,
+      "judge_explanation": "The diagnosis identifies subtract() returning a + b instead of a - b as the cause of the test_subtract failure, and its fix restores 'return a - b' without changing the tests, which matches the answer key.",
+      "points": 7,
+      "judge_cost": 0.00422,
+      "claude_code": {
+        "num_turns": 7,
+        "duration_ms": 14895,
+        "estimated_cost_usd": 0.18723900000000002
+      },
+      "diagnosis": {
+        "failed_stage": "Test",
+        "build_result": "FAILURE",
+        "category": "test_failure",
+        "root_cause": "Commit 4446cb4 changed subtract() in sample-app/app/calculator.py from `a - b` to `a + b`, so it adds instead of subtracts. As a result, test_subtract fails and the Test stage fails the build.",
+        "key_evidence": [
+          "[10:52:35] tests/test_calculator.py::test_subtract FAILED                           [ 40%]",
+          "[10:52:35] >       assert subtract(10, 4) == 6",
+          "[10:52:35] E       assert 14 == 6",
+          "[10:52:35] E        +  where 14 = subtract(10, 4)",
+          "[10:52:35] ========================= 1 failed, 4 passed in 3.52s ==========================",
+          "Commit message: \"Refactor calculator arithmetic helpers\"",
+          "-    return a - b",
+          "+    return a + b"
+        ],
+        "suggested_fix": "In sample-app/app/calculator.py, restore the body of subtract() to `return a - b`, and leave tests/test_calculator.py unchanged.",
+        "confidence": "high",
+        "assumptions": [
+          "The change to subtract() was accidental rather than intended; this is inferred from the 'Refactor' commit message and the correct arithmetic expected by test_subtract.",
+          "The saved console log comes from commit 4446cb4, which is the current tip of fail/broken-test; the log's revision matches, but no live Jenkins build was checked."
+        ],
+        "next_checks": [
+          "Confirm that all 5 tests pass with the fix.",
+          "Confirm that the Terraform Plan, Smoke Test and Deploy stages pass, since they were skipped in this build.",
+          "Apply the fix on a separate branch, because fail/broken-test is a fixed test case and must not be modified."
+        ]
+      }
+    },
+    {
+      "case": "innocent-commit",
+      "checks": {
+        "stage": true,
+        "result": true,
+        "category": true,
+        "root_cause": true
+      },
+      "fix_verdict": "correct",
+      "confidence": "medium",
+      "overconfident": false,
+      "judge_explanation": "The diagnosis correctly identifies the missing 'deploy-token' credential in Jenkins as the cause, unrelated to the README commit, and recommends restoring it without changing the Jenkinsfile or reverting the README, matching the answer key.",
+      "points": 7,
+      "judge_cost": 0.005022,
+      "claude_code": {
+        "num_turns": 13,
+        "duration_ms": 40065,
+        "estimated_cost_usd": 0.2727128
+      },
+      "diagnosis": {
+        "failed_stage": "Deploy",
+        "build_result": "FAILURE",
+        "category": "credential_error",
+        "root_cause": "The Deploy stage's withCredentials step could not resolve the Jenkins credential 'deploy-token', so the build failed. The branch's only change is a new README, so the problem is in Jenkins' credential configuration rather than the code.",
+        "key_evidence": [
+          "ERROR: Could not find credentials entry with ID 'deploy-token'",
+          "Finished: FAILURE",
+          "[Pipeline] { (Deploy)",
+          "withCredentials([string(credentialsId: 'deploy-token', variable: 'DEPLOY_TOKEN')]) {",
+          "main:sample-app/Jenkinsfile:60:                withCredentials([string(credentialsId: 'deploy-token', variable: 'DEPLOY_TOKEN')]) {",
+          "sample-app/README.md | 11 +++++++++++",
+          "1 file changed, 11 insertions(+)",
+          "main                         #12   SUCCESS",
+          "[11:03:35] ============================== 5 passed in 3.10s ==============================="
+        ],
+        "suggested_fix": "In Jenkins, restore a Secret text credential with the exact ID 'deploy-token' in a scope the calculator multibranch job can access, then have a human rebuild the branch. Do not change the Jenkinsfile or revert the README.",
+        "confidence": "medium",
+        "assumptions": [
+          "The credential existed when main #12 passed and was removed, renamed or re-scoped afterwards; the log for main #12 and its timing were not checked.",
+          "The credential is still missing now; Jenkins' credential store was not inspected, and the log only shows it was missing at 11:03 on the day of this build.",
+          "The credential should be of type Secret text, inferred from the string(...) binding in the Jenkinsfile."
+        ],
+        "next_checks": [
+          "Check Manage Jenkins > Credentials for 'deploy-token', including its exact ID, type and scope.",
+          "Compare the timestamp of main #12 with the time this build failed (11:03), and confirm that main #12 reached the 'Deploying calculator' line.",
+          "Check whether a current main build also fails at Deploy, which would show the problem isn't specific to this branch.",
+          "After restoring the credential, confirm that a rebuild prints 'Deploying calculator (token length: ...)' and finishes with SUCCESS."
+        ]
+      }
+    },
+    {
+      "case": "missing-credential",
+      "checks": {
+        "stage": true,
+        "result": true,
+        "category": true,
+        "root_cause": true
+      },
+      "fix_verdict": "correct",
+      "confidence": "high",
+      "overconfident": false,
+      "judge_explanation": "The diagnosis identifies the typo'd credentialsId 'deploy-tokn' versus the correct 'deploy-token', and its fix restores 'deploy-token' in the Jenkinsfile while explicitly warning against creating a 'deploy-tokn' credential.",
+      "points": 7,
+      "judge_cost": 0.004562,
+      "claude_code": {
+        "num_turns": 6,
+        "duration_ms": 14042,
+        "estimated_cost_usd": 0.1830852
+      },
+      "diagnosis": {
+        "failed_stage": "Deploy",
+        "build_result": "FAILURE",
+        "category": "credential_error",
+        "root_cause": "Commit 4a1b8a2 changed the Deploy stage's credentialsId from 'deploy-token' to the misspelled 'deploy-tokn'. No Jenkins credential has that ID, so withCredentials failed and the build ended before the deploy step ran.",
+        "key_evidence": [
+          "ERROR: Could not find credentials entry with ID 'deploy-tokn'",
+          "Commit message: \"Update deploy stage credential binding\"",
+          "-                withCredentials([string(credentialsId: 'deploy-token', variable: 'DEPLOY_TOKEN')]) {",
+          "+                withCredentials([string(credentialsId: 'deploy-tokn', variable: 'DEPLOY_TOKEN')]) {",
+          "[10:51:44] Service is healthy"
+        ],
+        "suggested_fix": "In the Deploy stage of sample-app/Jenkinsfile, restore the previous ID: withCredentials([string(credentialsId: 'deploy-token', variable: 'DEPLOY_TOKEN')]). Do not create a 'deploy-tokn' credential in Jenkins to match the typo.",
+        "confidence": "high",
+        "assumptions": [
+          "A credential with ID 'deploy-token' exists in Jenkins; this is inferred from main being green and using that ID, as the credential store was not inspected.",
+          "The rename to 'deploy-tokn' was an accidental typo, not the start of an intended credential rename; the commit message does not state the intent."
+        ],
+        "next_checks": [
+          "Confirm in Jenkins that 'deploy-token' is listed under Manage Jenkins > Credentials and is visible to the calculator job.",
+          "After the fix is applied on a real branch, confirm that the Deploy stage passes and logs the 'Deploying calculator' line."
+        ]
+      }
+    },
+    {
+      "case": "timeout",
+      "checks": {
+        "stage": true,
+        "result": true,
+        "category": true,
+        "root_cause": true
+      },
+      "fix_verdict": "correct",
+      "confidence": "high",
+      "overconfident": false,
+      "judge_explanation": "The diagnosis identifies the SMOKE_WAIT_SECONDS default change from 3 to 90 exceeding the 1-minute stage timeout, and its fix restores the default to 3, matching the answer key.",
+      "points": 7,
+      "judge_cost": 0.005076,
+      "claude_code": {
+        "num_turns": 7,
+        "duration_ms": 21311,
+        "estimated_cost_usd": 0.20623020000000003
+      },
+      "diagnosis": {
+        "failed_stage": "Smoke Test",
+        "build_result": "ABORTED",
+        "category": "timeout",
+        "root_cause": "Commit 220b4ad raised the default SMOKE_WAIT_SECONDS in sample-app/scripts/smoke_test.py from 3 to 90, and the script unconditionally loops for that many seconds. This exceeds the Smoke Test stage's unchanged 1-minute timeout, so Jenkins always cancels the stage before it finishes.",
+        "key_evidence": [
+          "[10:54:12] Timeout set to expire in 1 min 0 sec",
+          "[10:54:13] Waiting 90s for the service to become healthy...",
+          "[10:55:12]   still waiting... 59s",
+          "[10:55:12] Cancelling nested steps due to timeout",
+          "Stage \"Deploy\" skipped due to earlier failure(s)",
+          "Finished: ABORTED",
+          "-WAIT_SECONDS = int(os.environ.get(\"SMOKE_WAIT_SECONDS\", \"3\"))",
+          "+WAIT_SECONDS = int(os.environ.get(\"SMOKE_WAIT_SECONDS\", \"90\"))",
+          "Jenkinsfile, stage 'Smoke Test': timeout(time: 1, unit: 'MINUTES')",
+          "smoke_test.py: for second in range(1, WAIT_SECONDS + 1): time.sleep(1)",
+          "Commit message: \"Increase smoke test wait for slower environments\""
+        ],
+        "suggested_fix": "In sample-app/scripts/smoke_test.py, restore the previous default: WAIT_SECONDS = int(os.environ.get(\"SMOKE_WAIT_SECONDS\", \"3\")). Keep the Jenkinsfile's 1-minute stage timeout unchanged.",
+        "confidence": "high",
+        "assumptions": [
+          "No environment actually needs the 90-second wait; the commit message claims slower environments, but nothing in the log or code shows it.",
+          "The restored 3-second default will pass the stage on this branch, based on main being documented as green; no passing build log was examined."
+        ],
+        "next_checks": [
+          "Ask the commit author whether a specific slow environment prompted the change; if so, replace the fixed sleep with a real health check that has a deadline under the stage timeout.",
+          "After the fix is applied through the normal workflow, confirm that Smoke Test finishes and Deploy runs.",
+          "Separately, look into why the Test stage took about 97 seconds to collect and run 5 tests (pytest reported 90.55s); it passed and did not cause this failure, but it may indicate a slow agent."
+        ]
+      }
+    }
+  ]
+}
