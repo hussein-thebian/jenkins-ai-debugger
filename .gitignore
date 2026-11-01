@@ -13,3 +13,6 @@ __pycache__/
 
 # Generated diagnosis reports
 reports/
+
+# Watcher state
+automation/state.json
