@@ -1,6 +1,6 @@
 ---
 description: Diagnose a failed Jenkins build with a team of subagents (log-reader, jenkinsfile-checker, git-investigator)
-argument-hint: <branch> | <saved-console.log> <branch>
+argument-hint: <branch> [build-number] | <saved-console.log> <branch>
 ---
 
 Diagnose this failed Jenkins build: $ARGUMENTS
@@ -8,13 +8,13 @@ Diagnose this failed Jenkins build: $ARGUMENTS
 You are the orchestrator. Do not read the log, the Jenkinsfile or the git history yourself. Delegate to the subagents and reason over their reports.
 
 Input:
-- If the first argument is a branch name, the log comes from Jenkins for that branch.
+- If the first argument is a branch name, the log comes from Jenkins for that branch. An optional second argument is the build number (default: the latest build). The log-reader must fetch exactly that build with `get_build_log.sh <branch> <build-number>`.
 - If the first argument is the path to a saved console log, the log comes from that file, and the second argument is the branch to investigate. In that case, never fetch the log from Jenkins.
 
 Steps:
 1. Launch the log-reader subagent with the log source.
 2. When it reports, launch the jenkinsfile-checker and git-investigator subagents in parallel. Give both the branch, the failed stage and the first error from the log-reader's report.
-3. Combine the three reports. Base the root cause only on evidence they quote. If the reports disagree or something important is missing, you may launch one follow-up subagent with a specific question.
+3. Wait until all three reports have arrived before writing the diagnosis; never base it on a missing report. Combine them, and base the root cause only on evidence they quote. If the reports disagree or something important is missing, you may launch one follow-up subagent with a specific question.
 4. Choose one fix. If a recent commit broke a previously green build, prefer restoring the previous behavior, unless the evidence shows the change was intended. If the branch's changes are unrelated to the failure, say so and identify the cause elsewhere (for example Jenkins configuration). Never weaken or delete tests, remove timeouts, or simply retry.
 5. Read-only: propose the fix; do not apply it.
 
