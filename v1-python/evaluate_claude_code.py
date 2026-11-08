@@ -4,6 +4,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from datetime import datetime
 
 from diagnose import MODEL, PROJECT_ROOT, Diagnosis
@@ -45,7 +46,9 @@ def evaluate_case(case_dir, command):
     log_path = f"eval/cases/{name}/console.log"
 
     try:
+        started = time.monotonic()
         run = run_claude_code(command, log_path, expected["branch"])
+        wall_seconds = time.monotonic() - started
         diagnosis = extract_diagnosis(run["result"])
     except Exception as error:
         return {"case": name, "error": str(error), "points": 0, "judge_cost": 0}
@@ -76,6 +79,7 @@ def evaluate_case(case_dir, command):
         "claude_code": {
             "num_turns": run.get("num_turns"),
             "duration_ms": run.get("duration_ms"),
+            "wall_seconds": round(wall_seconds, 1),
             "estimated_cost_usd": run.get("total_cost_usd"),
             "models": sorted(run.get("modelUsage", {}).keys()),
         },
@@ -112,13 +116,13 @@ def main():
     judge_cost = sum(r["judge_cost"] for r in results)
     runs = [r["claude_code"] for r in results if "claude_code" in r]
     est_cost = sum(run["estimated_cost_usd"] or 0 for run in runs)
-    avg_seconds = sum((run["duration_ms"] or 0) for run in runs) / len(runs) / 1000 if runs else 0
+    avg_seconds = sum(run["wall_seconds"] for run in runs) / len(runs) if runs else 0
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     out_file = RESULTS_DIR / f"{args.label}_{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
     out_file.write_text(json.dumps(
         {"version": args.label, "command": args.command, "rubric": RUBRIC_VERSION, "judge_model": MODEL,
-         "total": total, "max": max_total, "estimated_cost_usd": est_cost, "avg_seconds": avg_seconds, "results": results},
+         "total": total, "max": max_total, "estimated_cost_usd": est_cost, "avg_seconds": avg_seconds, "timing": "wall", "results": results},
         indent=2,
     ))
     print(f"Saved {out_file.relative_to(PROJECT_ROOT)}", file=sys.stderr)
