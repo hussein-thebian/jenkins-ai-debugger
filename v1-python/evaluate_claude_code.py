@@ -14,14 +14,13 @@ JSON_BLOCK = re.compile(r"```json\s*(\{.*?\})\s*```", re.DOTALL)
 BLOCK_JENKINS = "Bash(.claude/skills/jenkins-debug/scripts/get_build_log.sh:*)"
 
 
-def run_claude_code(command, log_path, branch):
+def run_claude_code(command, log_path, branch, model=None):
     env = {key: value for key, value in os.environ.items() if key != "ANTHROPIC_API_KEY"}
+    cmd = ["claude", "-p", f"{command} {log_path} {branch}", "--output-format", "json", "--disallowedTools", BLOCK_JENKINS]
+    if model:
+        cmd += ["--model", model]
     completed = subprocess.run(
-        [
-            "claude", "-p", f"{command} {log_path} {branch}",
-            "--output-format", "json",
-            "--disallowedTools", BLOCK_JENKINS,
-        ],
+        cmd,
         cwd=PROJECT_ROOT,
         env=env,
         capture_output=True,
@@ -40,14 +39,14 @@ def extract_diagnosis(answer_text):
     return Diagnosis.model_validate_json(blocks[-1])
 
 
-def evaluate_case(case_dir, command):
+def evaluate_case(case_dir, command, model=None):
     name = case_dir.name
     expected = json.loads((case_dir / "expected.json").read_text())
     log_path = f"eval/cases/{name}/console.log"
 
     try:
         started = time.monotonic()
-        run = run_claude_code(command, log_path, expected["branch"])
+        run = run_claude_code(command, log_path, expected["branch"], model)
         wall_seconds = time.monotonic() - started
         diagnosis = extract_diagnosis(run["result"])
     except Exception as error:
@@ -103,13 +102,14 @@ def main():
     parser = argparse.ArgumentParser(description="Evaluate a Claude Code diagnosis command on the eval set.")
     parser.add_argument("--command", default="/debug-build", help="slash command to evaluate (default /debug-build)")
     parser.add_argument("--label", default="v2", help="label for the results file, e.g. v2 or v3 (default v2)")
+    parser.add_argument("--model", default=None, help="model for Claude Code, e.g. claude-sonnet-5-5 (default: Claude Code's own default)")
     args = parser.parse_args()
 
     case_dirs = sorted(d for d in CASES_DIR.iterdir() if d.is_dir())
     results = []
     for case_dir in case_dirs:
         print(f"[{args.label}] Running {args.command} on {case_dir.name} (fresh session)...", file=sys.stderr)
-        results.append(evaluate_case(case_dir, args.command))
+        results.append(evaluate_case(case_dir, args.command, args.model))
 
     total = sum(r["points"] for r in results)
     max_total = MAX_POINTS_PER_CASE * len(results)

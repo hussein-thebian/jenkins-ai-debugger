@@ -5,6 +5,7 @@ from evaluate import MAX_POINTS_PER_CASE, RESULTS_DIR, RUBRIC_VERSION
 VERSIONS = {
     "v1": "V1: Claude API, log only",
     "v2": "V2: Claude Code, one agent + skill",
+    "v2sonnet": "V2 on Sonnet (same model as V1)",
     "v3": "V3: Claude Code, agent team + hooks",
 }
 
